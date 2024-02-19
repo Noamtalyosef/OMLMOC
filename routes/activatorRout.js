@@ -1,7 +1,7 @@
 import express from 'express'
 import expressAsyncHandler from 'express-async-handler';
 import startMoving from '../logic/starter.js';
-import pushObjOut from '../logic/functions/pushObjOut.js';
+import moveObjectNorth from '../logic/functions/pushObjOut.js';
 import { objCollection } from '../index.js';
 import { ObjectId } from 'mongodb';
 
@@ -42,7 +42,7 @@ activatorRout.get("/pushOut", expressAsyncHandler(async(req,res)=>{
       const id = req.body.id
       
       const obj = await objCollection.findOne({ _id: new ObjectId(id) })
-       pushObjOut(obj,meters)
+       moveObjectNorth(obj,meters)
        res.status(200).send("object on the way out")
     }
     catch(err)

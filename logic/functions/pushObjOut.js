@@ -10,12 +10,13 @@ async function pushObjOut(obj,distanceInMeters) {
   const moveInterval = 2000; // Time interval between moves in milliseconds (2 seconds)
 
   let distanceMoved = 0;
+  let currentPosition = obj.Lat;
 
    moveIntervalId = setInterval(async() => {
     // Move the object north by the specified distance
     obj.Lat += (distancePerMove / 111111); // Approximately 1 degree of latitude is equal to about 111111 meters
   
-    distanceMoved += distancePerMove;
+    currentPosition += distancePerMove;
     
     await objCollection.updateOne({ _id: obj._id }, { $set: { Lat: obj.Lat} });
     console.log(obj.Lat)
@@ -35,4 +36,41 @@ async function pushObjOut(obj,distanceInMeters) {
   
 }
 
-export default pushObjOut;
+
+
+
+
+let interval2;
+
+function moveObjectNorth(object, meters) {
+  const distanceToMove = 5; // Distance to move in meters
+  const totalTime = 100 * 2 * 1000; // Total time in milliseconds (100 meters at 2 seconds per 5 meters)
+
+  let remainingDistance = meters||100; // Remaining distance to move
+  let currentPosition = object.Lat; // Current position of the object
+
+   interval2 = setInterval(async() => {
+    // Move the object north by the specified distance
+    currentPosition += (distanceToMove / 100000) * (111 / (40075 * Math.cos(currentPosition * Math.PI / 180))); 
+    // The factor (111 / (40075 * Math.cos(currentPosition * Math.PI / 180))) is used to adjust the latitude change based on the current latitude
+
+    // Update the object's position
+    object.Lat = currentPosition;
+
+    await objCollection.updateOne({ _id: obj._id }, { $set: { Lat: obj.Lat} });
+    console.log(obj.Lat)
+
+    // Update the remaining distance
+    remainingDistance -= distanceToMove;
+
+    // If the remaining distance is less than or equal to 0, stop the interval and send response
+    if (remainingDistance <= 0) {
+      clearInterval(interval2);
+
+    
+
+     
+    }
+  }, 2000); // 2000 milliseconds = 2 seconds
+}
+export default {pushObjOut,moveObjectNorth}
