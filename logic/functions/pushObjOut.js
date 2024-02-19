@@ -3,7 +3,7 @@ import { objCollection } from "../../index.js";
 
 let moveIntervalId;
 // Function to move one object north
-async function pushObjOut(obj,distanceInMeters) {
+  async function pushObjOut(obj,distanceInMeters) {
   try{
   const totalDistance = distanceInMeters||100; // Total distance to move in meters
   const distancePerMove = 5; // Distance to move in each step
@@ -42,7 +42,7 @@ async function pushObjOut(obj,distanceInMeters) {
 
 let interval2;
 
-function moveObjectNorth(object, meters) {
+ async function moveObjectNorth(object, meters) {
   const distanceToMove = 5; // Distance to move in meters
   const totalTime = 100 * 2 * 1000; // Total time in milliseconds (100 meters at 2 seconds per 5 meters)
 
@@ -57,8 +57,8 @@ function moveObjectNorth(object, meters) {
     // Update the object's position
     object.Lat = currentPosition;
 
-    await objCollection.updateOne({ _id: obj._id }, { $set: { Lat: obj.Lat} });
-    console.log(obj.Lat)
+    await objCollection.updateOne({ _id: object._id }, { $set: { Lat: object.Lat} });
+    console.log(object.Lat)
 
     // Update the remaining distance
     remainingDistance -= distanceToMove;
@@ -66,11 +66,9 @@ function moveObjectNorth(object, meters) {
     // If the remaining distance is less than or equal to 0, stop the interval and send response
     if (remainingDistance <= 0) {
       clearInterval(interval2);
-
-    
-
-     
+      console.log(object.Lat)
     }
   }, 2000); // 2000 milliseconds = 2 seconds
 }
-export default {pushObjOut,moveObjectNorth}
+
+export default moveObjectNorth
