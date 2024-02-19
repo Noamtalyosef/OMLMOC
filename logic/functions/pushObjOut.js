@@ -21,6 +21,7 @@ async function pushObjOut(obj,distanceInMeters) {
     console.log(obj.Lat)
     // Check if the total distance moved exceeds the target distance
     if (distanceMoved >= totalDistance) {
+      await objCollection.updateOne({ _id: obj._id }, { $set: { Lat: obj.Lat} });
       clearInterval(moveIntervalId); // Stop the interval when the total distance is reached
     
     }
