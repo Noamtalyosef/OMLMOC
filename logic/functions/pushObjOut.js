@@ -57,8 +57,8 @@ let interval2;
     // Update the object's position
     object.Lat = currentPosition;
 
-    await objCollection.updateOne({ _id: object._id }, { $set: { Lat: object.Lat} });
-    console.log(object.Lat)
+    const res = await objCollection.updateOne({ _id: object._id }, { $set: { Lat: object.Lat} });
+    console.log(object.Lat +"   "+ res.nModified)
 
     // Update the remaining distance
     remainingDistance -= distanceToMove;
